@@ -1,0 +1,28 @@
+NANO RTOS is a cooperative Real Time Operating System for ATMega328p microcontroller.
+
+It is implemented using queues for the tasks and and a mutex implementation for data syncronization.
+The system tick is 2ms/tick and is given by TIMER0 of the microcontroller, configured in CTC mode, with a 1/256 prescaler.
+
+A simple task implementation should look like this:
+
+void myTask(void* data)
+{
+while(1)
+{
+//your code here;
+}
+}
+
+The main components of the OS are:
+
+Mutex struct, to define a mutex.
+taskInit() method to initialize the OS, this method should be called first in main.
+mutexInit(Mutex* m) to initialize a mutex, this method should be called in main before using a mutex.
+taskCreate(TaskFunction fn, void *data) used to create a task and push it into the tasks queue.
+taskStart() this method shold be called last in main, this is called to start the scheduler and never returns.
+
+mutexLock(Mutex* m) and mutexUnlock(Mutex* m) methods are used to lock and unlock a mutex, to control the syncronization.
+
+The demo in main.c contains 4 tasks:
+-2 tasks (blink_task_red and blink_task_white to blink 2 leds at different delays)
+-2 tasks (change_task and blink_task_board to show how to use a mutex to syncronize data)
